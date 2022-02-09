@@ -6,17 +6,17 @@ const {
     Key
 } = require('./src/key');
 
-const mock = require('./mock.json');
-const blocks = mock.Blocks;
+const {
+    Box
+} = require('./src/box');
 
-const tableCustos = new Table(blocks, {
-    tableId: 'cb7e88c8-30fa-4716-aeec-b507945c914e'
-});
+const {
+    Type
+} = require('./src/type');
 
-console.log(tableCustos.rows());
-
-const keyVencimento = new Key(blocks, {
-    searchKey: "Vencimento"
-});
-
-console.log(keyVencimento.getValue());
+module.exports = {
+    Table,
+    Key,
+    Box,
+    Type
+}
