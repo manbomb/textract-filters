@@ -7,6 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
+  "keywords": [
+    "textract",
+    "filter",
+    "aws"
+  ],
   "repository": "https://github.com/manbomb/textract-filters",
   "author": "Sérgio Avilla <sergiolucasavilladasilva@gmail.com> (https://github.com/manbomb)",
   "license": "ISC"
