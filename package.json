@@ -1,6 +1,6 @@
 {
   "name": "textract-filters",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A simple filter to AWS Textract results",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,10 @@
     "aws"
   ],
   "repository": "https://github.com/manbomb/textract-filters",
+  "homepage": "https://github.com/manbomb/textract-filters",
   "author": "Sérgio Avilla <sergiolucasavilladasilva@gmail.com> (https://github.com/manbomb)",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
 }

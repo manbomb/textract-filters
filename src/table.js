@@ -68,7 +68,7 @@ class Table {
 
         const firstLine = cells.filter(({ RowIndex }) => RowIndex === 1);
         const firstLineLabels = firstLine.map((lineCell, index) => {
-            if (lineCell.childText.trim()) {
+            if (lineCell.childText) {
                 return lineCell.childText.trim();
             } else {
                 return String(index);
