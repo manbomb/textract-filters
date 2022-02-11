@@ -17,8 +17,8 @@ class Table {
         this.table = tablesWithId[0];
     }
 
-    #childs() {
-        const relationships = this.table.Relationships;
+    #childs(block) {
+        const relationships = block.Relationships;
         if (!relationships) return [];
 
         const childRelationship = relationships.filter(relationship => {
@@ -41,7 +41,7 @@ class Table {
     }
 
     #getCellByRowColumn(rowIndex, columnIndex) {
-        const childs = this.#childs();
+        const childs = this.#childs(this.table);
         const cells = childs.filter(({ BlockType }) => BlockType === 'CELL');
         const cellsInRowColumn = cells
             .filter(({ RowIndex }) => RowIndex === rowIndex)
@@ -58,12 +58,18 @@ class Table {
         if (cell.childText) {
             return cell.childText.trim();
         } else {
-            return "";
+            const childsOfCell = this.#childs(cell);
+
+            if (childsOfCell.length < 1) return "";
+
+            const childsTexts = childsOfCell.map(({ Text }) => String(Text));
+            const text = childsTexts.join(" ");
+            return text;
         }
     }
 
     rows() {
-        const childs = this.#childs();
+        const childs = this.#childs(this.table);
         const cells = childs.filter(({ BlockType }) => BlockType === 'CELL');
 
         const firstLine = cells.filter(({ RowIndex }) => RowIndex === 1);
