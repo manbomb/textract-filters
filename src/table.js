@@ -54,13 +54,13 @@ class Table {
         return cellsInRowColumn[0];
     }
 
-    #getValueOfCell(cell) {
+    #getValueOfCell(cell, defaultValue = "") {
         if (cell.childText) {
             return cell.childText.trim();
         } else {
             const childsOfCell = this.#childs(cell);
 
-            if (childsOfCell.length < 1) return "";
+            if (childsOfCell.length < 1) return defaultValue;
 
             const childsTexts = childsOfCell.map(({ Text }) => String(Text));
             const text = childsTexts.join(" ");
@@ -73,13 +73,7 @@ class Table {
         const cells = childs.filter(({ BlockType }) => BlockType === 'CELL');
 
         const firstLine = cells.filter(({ RowIndex }) => RowIndex === 1);
-        const firstLineLabels = firstLine.map((lineCell, index) => {
-            if (lineCell.childText) {
-                return lineCell.childText.trim();
-            } else {
-                return String(index);
-            }
-        });
+        const firstLineLabels = firstLine.map((lineCell, index) => this.#getValueOfCell(lineCell, String(index)));
 
         const numberOfColumns = firstLine.length;
         const numberOfLines = cells.length / firstLine.length;
@@ -88,13 +82,16 @@ class Table {
             .fill()
             .map((_, i) => [firstLineLabels[i]]);
 
-        const linesArray = new Array(numberOfLines - 1).fill(lineEntriesArray);
+        let linesArray = new Array(numberOfLines - 1).fill().map(() => [...lineEntriesArray]);
 
         for (let indexLine = 2; indexLine <= numberOfLines; indexLine++) {
             for (let indexColumn = 1; indexColumn <= numberOfColumns; indexColumn++) {
-                const cell = this.#getCellByRowColumn(indexLine, indexColumn);
-                const cellValue = this.#getValueOfCell(cell);
-                linesArray[indexLine-2][indexColumn-1][1] = cellValue;
+                let cell = this.#getCellByRowColumn(indexLine, indexColumn);
+                let cellValue = this.#getValueOfCell(cell);
+                linesArray[indexLine-2][indexColumn-1] = [
+                    linesArray[indexLine-2][indexColumn-1][0],
+                    cellValue
+                ];
             }
         }
 
