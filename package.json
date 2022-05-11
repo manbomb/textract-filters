@@ -1,6 +1,6 @@
 {
   "name": "textract-filters",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A simple filter to AWS Textract results",
   "main": "index.js",
   "scripts": {
