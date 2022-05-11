@@ -9,7 +9,7 @@ class Table {
         const tablesWithId = this.blocks
             .filter(({ BlockType }) => BlockType === 'TABLE')
             .filter(({ Id }) => Id === tableId);
-        
+
         if (tablesWithId.length < 1) {
             throw "Table with tableId not found!";
         }
@@ -32,7 +32,7 @@ class Table {
     #getBlockById(blockId) {
         const blocksWithId = this.blocks
             .filter(({ Id }) => Id === blockId);
-        
+
         if (blocksWithId.length < 1) {
             throw "Block with blockId not found!";
         }
@@ -46,7 +46,7 @@ class Table {
         const cellsInRowColumn = cells
             .filter(({ RowIndex }) => RowIndex === rowIndex)
             .filter(({ ColumnIndex }) => ColumnIndex === columnIndex);
-        
+
         if (cellsInRowColumn.length < 1) {
             throw "Cell in row and column selected not found";
         }
@@ -68,12 +68,33 @@ class Table {
         }
     }
 
-    rows() {
+    getCellsColumn(columnIndex) {
+        const childs = this.#childs(this.table);
+        const cells = childs.filter(({ BlockType }) => BlockType === 'CELL');
+        const cellsInColumn = cells
+            .filter(({ ColumnIndex }) => ColumnIndex === columnIndex);
+
+        return cellsInColumn.map(cell => this.#getValueOfCell(cell, ""));
+    }
+
+    header(headerPos = 1) {
         const childs = this.#childs(this.table);
         const cells = childs.filter(({ BlockType }) => BlockType === 'CELL');
 
-        const firstLine = cells.filter(({ RowIndex }) => RowIndex === 1);
+        const firstLine = cells.filter(({ RowIndex }) => RowIndex === headerPos);
         const firstLineLabels = firstLine.map((lineCell, index) => this.#getValueOfCell(lineCell, String(index)));
+
+        return firstLineLabels;
+    }
+
+    rows(
+        headerPos = 1
+    ) {
+        const childs = this.#childs(this.table);
+        const cells = childs.filter(({ BlockType }) => BlockType === 'CELL');
+        const firstLine = cells.filter(({ RowIndex }) => RowIndex === headerPos);
+
+        const firstLineLabels = this.header(headerPos);
 
         const numberOfColumns = firstLine.length;
         const numberOfLines = cells.length / firstLine.length;
@@ -88,8 +109,8 @@ class Table {
             for (let indexColumn = 1; indexColumn <= numberOfColumns; indexColumn++) {
                 let cell = this.#getCellByRowColumn(indexLine, indexColumn);
                 let cellValue = this.#getValueOfCell(cell);
-                linesArray[indexLine-2][indexColumn-1] = [
-                    linesArray[indexLine-2][indexColumn-1][0],
+                linesArray[indexLine - 2][indexColumn - 1] = [
+                    linesArray[indexLine - 2][indexColumn - 1][0],
                     cellValue
                 ];
             }
